@@ -15,10 +15,12 @@ INSTALLATION
 
 To install, unzip and untar the archive. In the directory created type
 
+```
 perl Makefile.pl
 make
 make test
 make install
+```
 
 Documentation is in the module file in Doxygen format.
 
