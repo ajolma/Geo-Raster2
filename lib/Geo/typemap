@@ -1,0 +1,126 @@
+TYPEMAP
+        ral_grid_type_t RAL_GRID_TYPE_T
+        ral_geometry_t * T_PTROBJ
+        GDALDatasetH HANDLE
+	GDALColorTableH T_PTROBJ
+        OGRLayerH T_PTROBJ
+        OGRFeatureH T_PTROBJ
+        OGRFieldType T_PTROBJ
+        ral_variogram_function T_PTROBJ
+        ral_class T_PTROBJ
+        ral_grid_t * GEO_RASTER2_GRID
+        ral_pixbuf_t * GEO_RASTER2_PIXBUF
+	ral_catchment * T_PTROBJ
+	RAL_INTEGER T_IV
+	RAL_REAL T_FLOAT
+	gtk2_ex_geo_pixbuf * GTK2_EX_GEO_PIXBUF
+	ral_object_t * T_RAL_OBJECT
+        ral_interval_t * T_RAL_OBJECT
+        ral_classifier_t * T_RAL_CLASSIFIER
+        ral_array_t * T_RAL_ARRAY
+        ral_bin_t * T_RAL_BIN
+        ral_hash_t * T_RAL_OBJECT
+        ral_rcoords_t * T_RAL_RCOORDS
+        ral_wcoords_t * T_RAL_WCOORDS
+        ral_wbox_t * T_RAL_WBOX
+
+INPUT
+
+RAL_GRID_TYPE_T
+        char *t = NULL;
+        if (SvPOKp($arg)) t = SvPV_nolen($arg);
+        if (t && strcmp(t, \"integer\") == 0)
+            $var = integer;
+        else if (t && strcmp(t, \"real\") == 0)
+            $var = real;
+        else
+            croak(\"$var is '%s', which is not a ral_grid_type_t\", t);
+
+HANDLE
+        $var = ($type)SV2Handle($arg);
+
+GEO_RASTER2_GRID
+        if (!SvOK($arg))
+            $var = NULL;
+        else if (sv_derived_from($arg, \"Geo::Raster2::Grid\")) {
+	    IV tmp = SvIV((SV*)SvRV($arg));
+	    $var = INT2PTR($type, tmp);
+	} else
+            croak(\"$var is not of type Geo::Raster2::Grid\")
+
+GEO_RASTER2_PIXBUF
+        if (!SvOK($arg))
+            $var = NULL;
+        else if (sv_derived_from($arg, \"Geo::Raster2::Pixbuf\")) {
+	    IV tmp = SvIV((SV*)SvRV($arg));
+	    $var = INT2PTR($type, tmp);
+	} else
+            croak(\"$var is not of type Geo::Raster2::Pixbuf\")
+
+GTK2_EX_GEO_PIXBUF
+        if (!SvOK($arg))
+            $var = NULL;
+        else if (sv_derived_from($arg, \"Gtk2::Ex::Geo::Pixbuf\")) {
+	    IV tmp = SvIV((SV*)SvRV($arg));
+	    $var = INT2PTR($type, tmp);
+	} else
+            croak(\"$var is not of type Gtk2::Ex::Geo::Pixbuf\")
+
+T_RAL_OBJECT
+        $var = ($type)perl_variable_to_ral_object($arg, ralObject)
+
+T_RAL_ARRAY
+        $var = ($type)perl_variable_to_ral_object($arg, ralArray)
+
+T_RAL_CLASSIFIER
+        $var = ($type)perl_variable_to_ral_object($arg, ralClassifier)
+
+T_RAL_BIN
+        $var = ($type)perl_variable_to_ral_object($arg, ralBin)
+
+T_RAL_RCOORDS
+        $var = ($type)perl_variable_to_ral_object($arg, ralRCoords)
+
+T_RAL_WCOORDS
+        $var = ($type)perl_variable_to_ral_object($arg, ralWCoords)
+
+T_RAL_WBOX
+        $var = ($type)perl_variable_to_ral_object($arg, ralWBox)
+
+OUTPUT
+
+RAL_GRID_TYPE_T
+        if ($var == integer)
+            $arg = newSVpv("integer", 0);
+        else
+            $arg = newSVpv("real", 0);
+
+GEO_RASTER2_GRID
+	sv_setref_pv($arg, \"Geo::Raster2::Grid\", (void*)$var);
+
+GEO_RASTER2_PIXBUF
+	sv_setref_pv($arg, \"Geo::Raster2::Pixbuf\", (void*)$var);
+
+GTK2_EX_GEO_PIXBUF
+	sv_setref_pv($arg, \"Gtk2::Ex::Geo::Pixbuf\", (void*)$var);
+
+T_RAL_OBJECT
+        $arg = ral_object_to_perl_variable($var, 1);
+
+T_RAL_ARRAY
+        $arg = ral_object_to_perl_variable($var, 1);
+
+T_RAL_CLASSIFIER
+        $arg = ral_object_to_perl_variable($var, 1);
+
+T_RAL_BIN
+        $arg = ral_object_to_perl_variable($var, 1);
+
+T_RAL_RCOORDS
+        $arg = ral_object_to_perl_variable($var, 1);
+
+T_RAL_WCOORDS
+        $arg = ral_object_to_perl_variable($var, 1);
+
+T_RAL_WBOX
+        $arg = ral_object_to_perl_variable($var, 1);
